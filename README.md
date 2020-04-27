@@ -18,6 +18,7 @@ Checks are separated into categories. This allows them to be displayed in approp
 * LoggedOnUsers.cs - List all logged on users
 * OSVersion.cs - OS version information 
 * VirtualEnvironment.cs - Checks if we are operating in a virtualised environment
+* UserDomainGroups.cs - Gets the users domain group memberships
 
 **Defences**
 * AVProcesses.cs - Checks if any known AV processes are running
