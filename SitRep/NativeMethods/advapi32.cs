@@ -8,8 +8,17 @@ namespace SitRep.NativeMethods
 {
     class advapi32
     {
+        //Award for best named variable goes to...
+        public const int ErrorSuccess = 0;
+
         [DllImport("advapi32", SetLastError = true, CharSet = CharSet.Unicode)]
         public static extern bool CredEnumerate(string filter, int flag, out int count, out IntPtr pCredentials);
+
+        [DllImport("Netapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern int NetGetJoinInformation(string server, out IntPtr domain, out NetJoinStatus status);
+
+        [DllImport("Netapi32.dll")]
+        public static extern int NetApiBufferFree(IntPtr Buffer);
 
         [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -98,7 +107,7 @@ namespace SitRep.NativeMethods
         public struct CREDENTIAL
         {
             public uint Flags;
-            public Enums.Enums.CredentialType Type;
+            public CredentialType Type;
             public IntPtr TargetName;
             public IntPtr Comment;
             public System.Runtime.InteropServices.ComTypes.FILETIME LastWritten;
@@ -109,6 +118,26 @@ namespace SitRep.NativeMethods
             public IntPtr Attributes;
             public IntPtr TargetAlias;
             public IntPtr UserName;
+        }
+
+        public enum CredentialType
+        {
+            Generic = 1,
+            DomainPassword,
+            DomainCertificate,
+            DomainVisiblePassword,
+            GenericCertificate,
+            DomainExtended,
+            Maximum,
+            MaximumEx = Maximum + 1000,
+        }
+
+        public enum NetJoinStatus
+        {
+            NetSetupUnknownStatus = 0,
+            NetSetupUnjoined,
+            NetSetupWorkgroupName,
+            NetSetupDomainName
         }
     }
 }

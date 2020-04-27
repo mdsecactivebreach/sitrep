@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Management" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml.Linq" />
@@ -54,6 +55,7 @@
     <Compile Include="Checks\Environment\HostName.cs" />
     <Compile Include="Checks\Environment\LoggedOnUsers.cs" />
     <Compile Include="Checks\Environment\OSVersion.cs" />
+    <Compile Include="Checks\Environment\UserDomainGroups.cs" />
     <Compile Include="Checks\Environment\VirtualEnvionment.cs" />
     <Compile Include="Checks\Permissions\Integrity.cs" />
     <Compile Include="Checks\Permissions\LocalAdmin.cs" />
