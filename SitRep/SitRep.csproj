@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{12963497-988F-46C0-9212-28B4B2B1831B}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>SitRep</RootNamespace>
+    <AssemblyName>SitRep</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Checks\CheckBase.cs" />
+    <Compile Include="Checks\Credentials\CredentialManager.cs" />
+    <Compile Include="Checks\Defences\AVProcesses.cs" />
+    <Compile Include="Checks\Environment\CurrentUser.cs" />
+    <Compile Include="Checks\Environment\DomainName.cs" />
+    <Compile Include="Checks\Environment\HostName.cs" />
+    <Compile Include="Checks\Environment\LoggedOnUsers.cs" />
+    <Compile Include="Checks\Environment\OSVersion.cs" />
+    <Compile Include="Checks\Environment\VirtualEnvionment.cs" />
+    <Compile Include="Checks\Permissions\Integrity.cs" />
+    <Compile Include="Checks\Permissions\LocalAdmin.cs" />
+    <Compile Include="Checks\Permissions\Privileges.cs" />
+    <Compile Include="Checks\Permissions\UACLevel.cs" />
+    <Compile Include="Checks\Software\InstalledBrowsers.cs" />
+    <Compile Include="Enums\Enums.cs" />
+    <Compile Include="Helpers\RegistryHelper.cs" />
+    <Compile Include="Interfaces\ICheck.cs" />
+    <Compile Include="NativeMethods\advapi32.cs" />
+    <Compile Include="NativeMethods\kernel32.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
