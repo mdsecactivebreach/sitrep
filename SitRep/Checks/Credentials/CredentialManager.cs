@@ -74,9 +74,9 @@ namespace SitRep.Checks.Credentials
         public string ApplicationName { get; set; }
         public string UserName { get; set; }
         public string Password  { get; set; }
-        public Enums.Enums.CredentialType CredentialType { get; set; }
+        public advapi32.CredentialType CredentialType { get; set; }
 
-        public Credential(Enums.Enums.CredentialType credentialType, string applicationName, string userName, string password)
+        public Credential(advapi32.CredentialType credentialType, string applicationName, string userName, string password)
         {
             ApplicationName = applicationName;
             UserName = userName;

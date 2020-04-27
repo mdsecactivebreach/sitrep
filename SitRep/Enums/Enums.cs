@@ -16,16 +16,5 @@ namespace SitRep.Enums
             Credential = 4
         }
 
-        public enum CredentialType
-        {
-            Generic = 1,
-            DomainPassword,
-            DomainCertificate,
-            DomainVisiblePassword,
-            GenericCertificate,
-            DomainExtended,
-            Maximum,
-            MaximumEx = Maximum + 1000,
-        }
     }
 }
