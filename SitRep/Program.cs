@@ -44,7 +44,7 @@ namespace SitRep
             checks.ForEach(x => x.Check());
 
             Console.WriteLine("=============================================");
-            Console.WriteLine("Envionment Checks");
+            Console.WriteLine("Environment Checks");
             Console.WriteLine("=============================================");
             foreach (var check in checks.Where(x => x.CheckType == Enums.Enums.CheckType.Environment).ToList().OrderBy(x=> x.DisplayOrder))
             {
