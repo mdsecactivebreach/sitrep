@@ -11,7 +11,7 @@ namespace SitRep.Checks.Environment
     {
         public bool IsOpsecSafe => true;
 
-        public int DisplayOrder => 7;
+        public int DisplayOrder => 6;
 
         public Enums.Enums.CheckType CheckType => Enums.Enums.CheckType.Environment;
 
@@ -35,7 +35,7 @@ namespace SitRep.Checks.Environment
 
         public override string ToString()
         {
-            return string.Format("OS Version: {0}", Message);
+            return string.Format("OS Version: {0}", Message).Trim();
         }
     }
 }

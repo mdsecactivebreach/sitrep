@@ -52,6 +52,8 @@
     <Compile Include="Checks\Defences\AVProcesses.cs" />
     <Compile Include="Checks\Environment\CurrentUser.cs" />
     <Compile Include="Checks\Environment\DomainName.cs" />
+    <Compile Include="Checks\Environment\SystemEnvironmentVariables.cs" />
+    <Compile Include="Checks\Environment\UserEnvironmentVariables.cs" />
     <Compile Include="Checks\Environment\HostName.cs" />
     <Compile Include="Checks\Environment\LoggedOnUsers.cs" />
     <Compile Include="Checks\Environment\OSVersion.cs" />
