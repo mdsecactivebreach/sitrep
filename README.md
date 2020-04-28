@@ -19,6 +19,8 @@ Checks are separated into categories. This allows them to be displayed in approp
 * OSVersion.cs - OS version information 
 * VirtualEnvironment.cs - Checks if we are operating in a virtualised environment
 * UserDomainGroups.cs - Gets the users domain group memberships
+* userEnvironmentVariables.cs - Grabs the environment variables applied to the current process 
+* SystemEnvironmentVariables.cs - Grabs system environment variables from the registry (HKLM)
 
 **Defences**
 * AVProcesses.cs - Checks if any known AV processes are running
