@@ -51,7 +51,7 @@ namespace SitRep.Checks.Permissions
             var builder = new StringBuilder();
             builder.AppendLine("User Domain Groups:");
             builder.AppendLine(Message);
-            return builder.ToString();
+            return builder.ToString().Trim();
         }
 
         private bool IsDomainJoined()

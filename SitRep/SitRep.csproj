@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Management" />
     <Reference Include="System.ServiceProcess" />
@@ -50,6 +51,7 @@
     <Compile Include="Checks\CheckBase.cs" />
     <Compile Include="Checks\Credentials\CredentialManager.cs" />
     <Compile Include="Checks\Defences\AVProcesses.cs" />
+    <Compile Include="Checks\Permissions\ComputerDomainGroups.cs" />
     <Compile Include="Checks\Environment\CurrentUser.cs" />
     <Compile Include="Checks\Environment\DomainName.cs" />
     <Compile Include="Checks\Environment\NameServers.cs" />
@@ -58,7 +60,7 @@
     <Compile Include="Checks\Environment\HostName.cs" />
     <Compile Include="Checks\Environment\LoggedOnUsers.cs" />
     <Compile Include="Checks\Environment\OSVersion.cs" />
-    <Compile Include="Checks\Environment\UserDomainGroups.cs" />
+    <Compile Include="Checks\Permissions\UserDomainGroups.cs" />
     <Compile Include="Checks\Environment\VirtualEnvionment.cs" />
     <Compile Include="Checks\Permissions\Integrity.cs" />
     <Compile Include="Checks\Permissions\LocalAdmin.cs" />
