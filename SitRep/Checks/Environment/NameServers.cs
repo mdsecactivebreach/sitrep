@@ -17,23 +17,30 @@ namespace SitRep.Checks.Environment
 
         public void Check()
         {
-            Message = "No network interfaces found [*]";
-            var builder = new StringBuilder();
-            var adapters = NetworkInterface.GetAllNetworkInterfaces();
-            foreach(var adapter in adapters)
+            try
             {
-                var adapterProperties = adapter.GetIPProperties();
-                var dnsServers = adapterProperties.DnsAddresses;
-                if(dnsServers.Count > 0)
+                Message = "No network interfaces found [*]";
+                var builder = new StringBuilder();
+                var adapters = NetworkInterface.GetAllNetworkInterfaces();
+                foreach (var adapter in adapters)
                 {
-                    builder.AppendLine(string.Format("\t{0}", adapter.Description));
-                    foreach(var dns in dnsServers)
+                    var adapterProperties = adapter.GetIPProperties();
+                    var dnsServers = adapterProperties.DnsAddresses;
+                    if (dnsServers.Count > 0)
                     {
-                        builder.AppendLine(string.Format("\t\t{0}", dns.ToString()));
+                        builder.AppendLine(string.Format("\t{0}", adapter.Description));
+                        foreach (var dns in dnsServers)
+                        {
+                            builder.AppendLine(string.Format("\t\t{0}", dns.ToString()));
+                        }
                     }
                 }
+                Message = builder.ToString();
             }
-            Message = builder.ToString();
+            catch
+            {
+                Message = "\tCheck failed [*]";
+            }
         }
 
         public override string ToString()

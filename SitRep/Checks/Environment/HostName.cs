@@ -17,8 +17,15 @@ namespace SitRep.Checks.Environment
 
         public void Check()
         {
-            var strHostName = Dns.GetHostName();
-            Message = strHostName;
+            try
+            {
+                var strHostName = Dns.GetHostName();
+                Message = strHostName;
+            }
+            catch
+            {
+                Message = "Check failed [*]";
+            }
         }
 
         public override string ToString()

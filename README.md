@@ -18,7 +18,6 @@ Checks are separated into categories. This allows them to be displayed in approp
 * LoggedOnUsers.cs - List all logged on users
 * OSVersion.cs - OS version information 
 * VirtualEnvironment.cs - Checks if we are operating in a virtualised environment
-* UserDomainGroups.cs - Gets the users domain group memberships
 * userEnvironmentVariables.cs - Grabs the environment variables applied to the current process 
 * SystemEnvironmentVariables.cs - Grabs system environment variables from the registry (HKLM)
 * NameServers.cs - Gets the DNS servers for each network interface 
@@ -31,6 +30,8 @@ Checks are separated into categories. This allows them to be displayed in approp
 * LocalAdmin.cs - Check if we are a local admin
 * Privileges.cs - List our current privileges.
 * UACLevel.cs - Get the UAC level
+* UserDomainGroups.cs - Gets the users domain group memberships
+* ComputerDomainGroups.cs - Gets the domain groups the computer is a member of
 
 **Software**
 * InstalledBrowsers.cs - Lists the browsers installed on the endpoint
@@ -38,10 +39,18 @@ Checks are separated into categories. This allows them to be displayed in approp
 **Credentials**
 * CredentialManager.cs - Retrieve credentials stored in Windows Credential Manager for the current user
 
+The following checks are currently marked as being not OpSec safe:
+
+* CredentialManager.cs
+* ComputerDomainGroups.cs
+* UserDomainGroups.cs
+
+You should review this configuration and update the OpSec tags as required.
+
 ## Disabling Checks
 All checks are enabled by default. However, as checks are loaded dynamically, it is possible to disable them.
 
-**Disbling a check**
+**Disabling a check**
 
 CheckBase includes a boolean "Enabled" property, which defaults to true. This can be set in the derived class by adding a constructor. The example below disables the CurrentUser check (CurrentUser.cs):
 
@@ -83,6 +92,8 @@ Derived classes must override the "ToString()" method defined in CheckBase. This
 
 Access to native methods is provided via classes in the "NativeMethods" folder. Each class is named after the dll it interacts with. 
 
+Checks are responsible for providing their own error handling. Current checks wrap the entire "check" method in a try-catch block, the use of this pattern is encouraged.  
+
 An example, empty check is shown below
 
 ```
@@ -101,7 +112,14 @@ namespace SitRep.Checks.Software
 
         public void Check()
         {
-            throw new NotImplementedException();
+            try
+            {
+                throw new NotImplementedException();
+            }
+            catch
+            {
+                Message = "Check failed [*]";
+            }
         }
 
         public override string ToString()

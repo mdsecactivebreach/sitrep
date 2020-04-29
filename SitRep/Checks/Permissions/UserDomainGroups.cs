@@ -18,32 +18,39 @@ namespace SitRep.Checks.Permissions
 
         public void Check()
         {
-            //First, check if we are domain joined. otherwise, we dont want to run this code...
-            if (!IsDomainJoined())
+            try
             {
-                Message = "\tHost is not domain joined";
-                return;
-            }
-            var builder = new StringBuilder();
-            //adapted from https://stackoverflow.com/questions/5309988/how-to-get-the-groups-of-a-user-in-active-directory-c-asp-net
-            var groups = new List<string>();
-            var UPN = System.DirectoryServices.AccountManagement.UserPrincipal.Current.UserPrincipalName;
-            var wi = new WindowsIdentity(UPN);
-
-            foreach (var group in wi.Groups)
-            {
-                try
+                //First, check if we are domain joined. otherwise, we dont want to run this code...
+                if (!IsDomainJoined())
                 {
-                    groups.Add(group.Translate(typeof(NTAccount)).ToString());
+                    Message = "\tHost is not domain joined";
+                    return;
                 }
-                catch { }
+                var builder = new StringBuilder();
+                //adapted from https://stackoverflow.com/questions/5309988/how-to-get-the-groups-of-a-user-in-active-directory-c-asp-net
+                var groups = new List<string>();
+                var UPN = System.DirectoryServices.AccountManagement.UserPrincipal.Current.UserPrincipalName;
+                var wi = new WindowsIdentity(UPN);
+
+                foreach (var group in wi.Groups)
+                {
+                    try
+                    {
+                        groups.Add(group.Translate(typeof(NTAccount)).ToString());
+                    }
+                    catch { }
+                }
+                groups.Sort();
+                foreach (var group in groups)
+                {
+                    builder.AppendLine("\t" + group);
+                }
+                Message = builder.ToString();
             }
-            groups.Sort();
-            foreach (var group in groups)
+            catch
             {
-                builder.AppendLine("\t" + group);
+                Message = "\tCheck failed [*]";
             }
-            Message = builder.ToString();
         }
 
         public override string ToString()
@@ -51,7 +58,7 @@ namespace SitRep.Checks.Permissions
             var builder = new StringBuilder();
             builder.AppendLine("User Domain Groups:");
             builder.AppendLine(Message);
-            return builder.ToString();
+            return builder.ToString().Trim();
         }
 
         private bool IsDomainJoined()

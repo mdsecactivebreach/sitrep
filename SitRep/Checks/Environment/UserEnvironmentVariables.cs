@@ -17,12 +17,19 @@ namespace SitRep.Checks.Environment
 
         public void Check()
         {
-            var builder = new StringBuilder();
-            foreach(DictionaryEntry item in System.Environment.GetEnvironmentVariables())
+            try
             {
-                builder.AppendLine(string.Format("\t{0} = {1}", item.Key, item.Value));
+                var builder = new StringBuilder();
+                foreach (DictionaryEntry item in System.Environment.GetEnvironmentVariables())
+                {
+                    builder.AppendLine(string.Format("\t{0} = {1}", item.Key, item.Value));
+                }
+                Message = builder.ToString();
             }
-            Message = builder.ToString();
+            catch
+            {
+                Message = "\tCheck failed [*]";
+            }
         }
 
         public override string ToString()

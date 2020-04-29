@@ -16,30 +16,37 @@ namespace SitRep.Checks.Environment
 
         public void Check()
         {
-            //seems WMI is the only way to do this. 
-            //https://stackoverflow.com/questions/498371/how-to-detect-if-my-application-is-running-in-a-virtual-machine
-            Message = "Host not virtualised";
-            using (var searcher = new System.Management.ManagementObjectSearcher("Select * from Win32_ComputerSystem"))
+            try
             {
-                using (var items = searcher.Get())
+                //seems WMI is the only way to do this. 
+                //https://stackoverflow.com/questions/498371/how-to-detect-if-my-application-is-running-in-a-virtual-machine
+                Message = "Host not virtualised";
+                using (var searcher = new System.Management.ManagementObjectSearcher("Select * from Win32_ComputerSystem"))
                 {
-                    foreach (var item in items)
+                    using (var items = searcher.Get())
                     {
-                        string manufacturer = item["Manufacturer"].ToString().ToLower();
-                        if (manufacturer == "microsoft corporation" && item["Model"].ToString().ToUpperInvariant().Contains("VIRTUAL"))
+                        foreach (var item in items)
                         {
-                            Message = "Virtualisation detected (Microsoft) [*]";
-                        }
-                        else if (manufacturer.Contains("vmware"))
-                        {
-                            Message = "Virtualisation detected (VMWare) [*]";
-                        }
-                        else if (item["Model"].ToString() == "VirtualBox")
-                        {
-                            Message = "Virtualisation detected (VirtualBox) [*]";
+                            string manufacturer = item["Manufacturer"].ToString().ToLower();
+                            if (manufacturer == "microsoft corporation" && item["Model"].ToString().ToUpperInvariant().Contains("VIRTUAL"))
+                            {
+                                Message = "Virtualisation detected (Microsoft) [*]";
+                            }
+                            else if (manufacturer.Contains("vmware"))
+                            {
+                                Message = "Virtualisation detected (VMWare) [*]";
+                            }
+                            else if (item["Model"].ToString() == "VirtualBox")
+                            {
+                                Message = "Virtualisation detected (VirtualBox) [*]";
+                            }
                         }
                     }
                 }
+            }
+            catch
+            {
+                Message = "Check failed [*]";
             }
         }
 

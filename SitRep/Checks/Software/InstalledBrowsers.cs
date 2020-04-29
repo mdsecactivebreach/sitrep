@@ -16,37 +16,44 @@ namespace SitRep.Checks.Software
         public Enums.Enums.CheckType CheckType => Enums.Enums.CheckType.Software;
         public void Check()
         {
-            //adapted from https://github.com/MintPlayer/PlatformBrowser/edit/master/MintPlayer.PlatformBrowser/PlatformBrowser.cs
-            var builder = new StringBuilder();
-
-            //get browser info from registry 
-            var internetKey = RegistryHelper.GetRegSubkeys("HKLM", @"SOFTWARE\WOW6432Node\Clients\StartMenuInternet");
-            if (internetKey == null)
+            try
             {
-                internetKey = RegistryHelper.GetRegSubkeys("HKLM", @"SOFTWARE\Clients\StartMenuInternet");
-            }
+                //adapted from https://github.com/MintPlayer/PlatformBrowser/edit/master/MintPlayer.PlatformBrowser/PlatformBrowser.cs
+                var builder = new StringBuilder();
 
-            foreach(var browser in internetKey)
-            {
-                builder.AppendLine("\t" + browser);
-            }
-
-            //Apparently Edge is special... 
-            var systemAppsFolder = @"C:\Windows\SystemApps\";
-            if (System.IO.Directory.Exists(systemAppsFolder))
-            {
-                var directories = System.IO.Directory.GetDirectories(systemAppsFolder);
-                var edgeFolder = directories.FirstOrDefault(d => d.StartsWith($"{systemAppsFolder}Microsoft.MicrosoftEdge_"));
-
-                if(edgeFolder != null)
+                //get browser info from registry 
+                var internetKey = RegistryHelper.GetRegSubkeys("HKLM", @"SOFTWARE\WOW6432Node\Clients\StartMenuInternet");
+                if (internetKey == null)
                 {
-                    if (System.IO.File.Exists($@"{edgeFolder}\MicrosoftEdge.exe"))
+                    internetKey = RegistryHelper.GetRegSubkeys("HKLM", @"SOFTWARE\Clients\StartMenuInternet");
+                }
+
+                foreach (var browser in internetKey)
+                {
+                    builder.AppendLine("\t" + browser);
+                }
+
+                //Apparently Edge is special... 
+                var systemAppsFolder = @"C:\Windows\SystemApps\";
+                if (System.IO.Directory.Exists(systemAppsFolder))
+                {
+                    var directories = System.IO.Directory.GetDirectories(systemAppsFolder);
+                    var edgeFolder = directories.FirstOrDefault(d => d.StartsWith($"{systemAppsFolder}Microsoft.MicrosoftEdge_"));
+
+                    if (edgeFolder != null)
                     {
-                        builder.AppendLine("\t" + "Microsoft Edge");
+                        if (System.IO.File.Exists($@"{edgeFolder}\MicrosoftEdge.exe"))
+                        {
+                            builder.AppendLine("\t" + "Microsoft Edge");
+                        }
                     }
                 }
+                Message = builder.ToString();
             }
-            Message = builder.ToString();
+            catch
+            {
+                Message = "\tCheck failed [*]";
+            }
         }
 
         public override string ToString()

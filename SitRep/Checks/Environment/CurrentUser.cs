@@ -17,7 +17,14 @@ namespace SitRep.Checks.Environment
 
         public void Check()
         {
-            Message = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            try
+            {
+                Message = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            }
+            catch
+            {
+                Message = "Check failed [*]";
+            }
         }
 
         public override string ToString()
