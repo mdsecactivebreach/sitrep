@@ -17,12 +17,19 @@ namespace SitRep.Checks.Permissions
 
         public void Check()
         {
-            Message = "Not in High Integrity context";
-            var identity = WindowsIdentity.GetCurrent();
-            var principal = new WindowsPrincipal(identity);
-            if (principal.IsInRole(WindowsBuiltInRole.Administrator))
+            try
             {
-                Message = "In High Integrity context [*]";
+                Message = "Not in High Integrity context";
+                var identity = WindowsIdentity.GetCurrent();
+                var principal = new WindowsPrincipal(identity);
+                if (principal.IsInRole(WindowsBuiltInRole.Administrator))
+                {
+                    Message = "In High Integrity context [*]";
+                }
+            }
+            catch
+            {
+                Message = "Check failed [*]";
             }
         }
 

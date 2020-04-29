@@ -17,27 +17,28 @@ namespace SitRep.Checks.Permissions
 
         public void Check()
         {
-            var builder = new StringBuilder();
-            var domainName = System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().DomainName;
-            if (string.IsNullOrWhiteSpace(domainName))
-            {
-                Message = "Not domain joined";
-                return;
-            }
             try
             {
+                var builder = new StringBuilder();
+                var domainName = System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().DomainName;
+                if (string.IsNullOrWhiteSpace(domainName))
+                {
+                    Message = "Not domain joined";
+                    return;
+                }
+
                 ComputerPrincipal principal = ComputerPrincipal.FindByIdentity(new PrincipalContext(ContextType.Domain, domainName), Dns.GetHostName());
                 foreach (GroupPrincipal group in principal.GetGroups())
                 {
                     builder.AppendLine(string.Format("\t{0}", group));
                 }
+
+                Message = builder.ToString();
             }
-            catch(Exception ex)
+            catch
             {
-                builder.AppendLine(ex.ToString());
-                
+                Message = "Check failed [*]";
             }
-            Message = builder.ToString();
         }
 
         public override string ToString()

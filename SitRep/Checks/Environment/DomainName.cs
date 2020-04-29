@@ -14,9 +14,16 @@ namespace SitRep.Checks.Environment
 
         public void Check()
         {
-            IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
-            string dnsDomain = properties.DomainName;
-            Message = string.IsNullOrEmpty(dnsDomain) ? "NOT DOMAIN JOINED [*]" : dnsDomain;
+            try
+            {
+                IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
+                string dnsDomain = properties.DomainName;
+                Message = string.IsNullOrEmpty(dnsDomain) ? "NOT DOMAIN JOINED [*]" : dnsDomain;
+            }
+            catch
+            {
+                Message = "Check failed [*]";
+            }
         }
 
         public override string ToString()

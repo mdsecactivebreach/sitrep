@@ -18,32 +18,39 @@ namespace SitRep.Checks.Environment
 
         public void Check()
         {
-            var builder = new StringBuilder();
-            var userList = new List<string>();
-            var userDomainRegex = new Regex(@"Domain=""(.*)"",Name=""(.*)""");
-            var logonIdRegex = new Regex(@"LogonId=""(\d+)""");
-            //doing this via the win32 api killed execute-assembly. using the Seatbelt WMI query method instead
-            var wmiData = new ManagementObjectSearcher(@"root\cimv2", "SELECT * FROM Win32_LoggedOnUser");
-            var data = wmiData.Get();
-
-            foreach(var result in data)
+            try
             {
-                var m = logonIdRegex.Match(result["Dependent"].ToString());
-                if (m.Success)
+                var builder = new StringBuilder();
+                var userList = new List<string>();
+                var userDomainRegex = new Regex(@"Domain=""(.*)"",Name=""(.*)""");
+                var logonIdRegex = new Regex(@"LogonId=""(\d+)""");
+                //doing this via the win32 api killed execute-assembly. using the Seatbelt WMI query method instead
+                var wmiData = new ManagementObjectSearcher(@"root\cimv2", "SELECT * FROM Win32_LoggedOnUser");
+                var data = wmiData.Get();
+
+                foreach (var result in data)
                 {
-                    var logonID = m.Groups[1].ToString();
-                    var m2 = userDomainRegex.Match(result["Antecedent"].ToString());
-                    if (m2.Success)
+                    var m = logonIdRegex.Match(result["Dependent"].ToString());
+                    if (m.Success)
                     {
-                        var domain = m2.Groups[1].ToString();
-                        var user = m2.Groups[2].ToString();
-                        userList.Add("\t" + domain + "\\" + user);
+                        var logonID = m.Groups[1].ToString();
+                        var m2 = userDomainRegex.Match(result["Antecedent"].ToString());
+                        if (m2.Success)
+                        {
+                            var domain = m2.Groups[1].ToString();
+                            var user = m2.Groups[2].ToString();
+                            userList.Add("\t" + domain + "\\" + user);
+                        }
                     }
                 }
+                //remove duplicates
+                userList.Distinct().ToList().ForEach(x => builder.AppendLine(x));
+                Message = builder.ToString();
             }
-            //remove duplicates
-            userList.Distinct().ToList().ForEach(x => builder.AppendLine(x));
-            Message = builder.ToString();
+            catch
+            {
+                Message = "Check failed [*]";
+            }
         }
 
         public override string ToString()

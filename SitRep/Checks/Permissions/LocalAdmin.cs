@@ -19,18 +19,25 @@ namespace SitRep.Checks.Permissions
 
         public void Check()
         {
-            Message = "Not a local admin";
-            
-            //adapted from Seatbelt
-            //checks if the "S-1-5-32-544" in the current token groups set, meaning the user is a local administrator
-            string[] SIDs = GetTokenGroupSIDs();
-
-            foreach (string SID in SIDs)
+            try
             {
-                if (SID == "S-1-5-32-544")
+                Message = "Not a local admin";
+
+                //adapted from Seatbelt
+                //checks if the "S-1-5-32-544" in the current token groups set, meaning the user is a local administrator
+                string[] SIDs = GetTokenGroupSIDs();
+
+                foreach (string SID in SIDs)
                 {
-                    Message = "Current user is a Local admin [*]";
+                    if (SID == "S-1-5-32-544")
+                    {
+                        Message = "Current user is a Local admin [*]";
+                    }
                 }
+            }
+            catch
+            {
+                Message = "Check failed [*]";
             }
         }
 

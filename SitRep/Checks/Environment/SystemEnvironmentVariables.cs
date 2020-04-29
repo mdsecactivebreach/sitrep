@@ -16,20 +16,27 @@ namespace SitRep.Checks.Environment
 
         public void Check()
         {
-            var builder = new StringBuilder();
-            //Adapted from Seatbelt 
-            var items = Helpers.RegistryHelper.GetRegValues("HKLM", @"SYSTEM\CurrentControlSet\Control\Session Manager\Environment");
-            if(items == null || items.Count == 0)
+            try
             {
-                Message = "\tNo values loaded";
-                return;
-            }
-            foreach(var item in items)
-            {
-                builder.AppendLine(string.Format("\t{0} = {1}", item.Key, item.Value));
-            }
+                var builder = new StringBuilder();
+                //Adapted from Seatbelt 
+                var items = Helpers.RegistryHelper.GetRegValues("HKLM", @"SYSTEM\CurrentControlSet\Control\Session Manager\Environment");
+                if (items == null || items.Count == 0)
+                {
+                    Message = "\tNo values loaded";
+                    return;
+                }
+                foreach (var item in items)
+                {
+                    builder.AppendLine(string.Format("\t{0} = {1}", item.Key, item.Value));
+                }
 
-            Message = builder.ToString();
+                Message = builder.ToString();
+            }
+            catch
+            {
+                Message = "Check failed [*]";
+            }
         }
 
         public override string ToString()

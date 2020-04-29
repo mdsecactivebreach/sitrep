@@ -17,30 +17,37 @@ namespace SitRep.Checks.Permissions
 
         public void Check()
         {
-            string ConsentPromptBehaviorAdmin = RegistryHelper.GetRegValue("HKLM", "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", "ConsentPromptBehaviorAdmin");
-            switch (ConsentPromptBehaviorAdmin)
+            try
             {
-                case "0":
-                    Message = "No prompting [*]";
-                    break;
-                case "1":
-                    Message = "PromptOnSecureDesktop";
-                    break;
-                case "2":
-                    Message = " PromptPermitDenyOnSecureDesktop";
-                    break;
-                case "3":
-                    Message = "PromptForCredsNotOnSecureDesktop";
-                    break;
-                case "4":
-                    Message = "PromptForPermitDenyNotOnSecureDesktop";
-                    break;
-                case "5":
-                    Message = "PromptForNonWindowsBinaries";
-                    break;
-                default:
-                    Message = "PromptForNonWindowsBinaries";
-                    break;
+                string ConsentPromptBehaviorAdmin = RegistryHelper.GetRegValue("HKLM", "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", "ConsentPromptBehaviorAdmin");
+                switch (ConsentPromptBehaviorAdmin)
+                {
+                    case "0":
+                        Message = "No prompting [*]";
+                        break;
+                    case "1":
+                        Message = "PromptOnSecureDesktop";
+                        break;
+                    case "2":
+                        Message = " PromptPermitDenyOnSecureDesktop";
+                        break;
+                    case "3":
+                        Message = "PromptForCredsNotOnSecureDesktop";
+                        break;
+                    case "4":
+                        Message = "PromptForPermitDenyNotOnSecureDesktop";
+                        break;
+                    case "5":
+                        Message = "PromptForNonWindowsBinaries";
+                        break;
+                    default:
+                        Message = "PromptForNonWindowsBinaries";
+                        break;
+                }
+            }
+            catch
+            {
+                Message = "Check failed [*]";
             }
         }
 

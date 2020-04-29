@@ -17,17 +17,24 @@ namespace SitRep.Checks.Defences
 
         public void Check()
         {
-            var builder = new StringBuilder();
-
-            var processList = Process.GetProcesses();
-            foreach(var process in processList)
+            try
             {
-                if (AVProcessNames.Contains(process.ProcessName))
+                var builder = new StringBuilder();
+
+                var processList = Process.GetProcesses();
+                foreach (var process in processList)
                 {
-                    builder.AppendLine("\t" + process.ProcessName);
+                    if (AVProcessNames.Contains(process.ProcessName))
+                    {
+                        builder.AppendLine("\t" + process.ProcessName);
+                    }
                 }
+                Message = builder.ToString();
             }
-            Message = builder.ToString();
+            catch
+            {
+                Message = "Check failed [*]";
+            }
         }
         public override string ToString()
         {

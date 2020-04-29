@@ -17,20 +17,27 @@ namespace SitRep.Checks.Environment
 
         public void Check()
         {
-            var builder = new StringBuilder();
-            using (var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem"))
+            try
             {
-                var information = searcher.Get();
-                if (information != null)
+                var builder = new StringBuilder();
+                using (var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem"))
                 {
-                    foreach (var obj in information)
+                    var information = searcher.Get();
+                    if (information != null)
                     {
-                        builder.AppendLine(obj["Caption"].ToString() + " - " + obj["OSArchitecture"].ToString());
+                        foreach (var obj in information)
+                        {
+                            builder.AppendLine(obj["Caption"].ToString() + " - " + obj["OSArchitecture"].ToString());
+                        }
                     }
+
                 }
-         
+                Message = builder.ToString();
             }
-            Message = builder.ToString();
+            catch
+            {
+                Message = "Check failed [*]";
+            }
         }
 
         public override string ToString()

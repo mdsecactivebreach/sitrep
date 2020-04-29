@@ -19,32 +19,39 @@ namespace SitRep.Checks.Credentials
 
         public void Check()
         {
-            var builder = new StringBuilder();
-            Message = "No credentials found";
-            var creds = new List<Credential>();
-            int count;
-            IntPtr pCredentials;
-            bool ret = advapi32.CredEnumerate(null, 0, out count, out pCredentials);
-
-            if (ret)
+            try
             {
-                for (int i = 0; i < count; i++)
+                var builder = new StringBuilder();
+                Message = "No credentials found";
+                var creds = new List<Credential>();
+                int count;
+                IntPtr pCredentials;
+                bool ret = advapi32.CredEnumerate(null, 0, out count, out pCredentials);
+
+                if (ret)
                 {
-                    IntPtr credential = Marshal.ReadIntPtr(pCredentials, i * Marshal.SizeOf(typeof(IntPtr)));
-                    creds.Add(ReadCredential((advapi32.CREDENTIAL)Marshal.PtrToStructure(credential, typeof(advapi32.CREDENTIAL))));
+                    for (int i = 0; i < count; i++)
+                    {
+                        IntPtr credential = Marshal.ReadIntPtr(pCredentials, i * Marshal.SizeOf(typeof(IntPtr)));
+                        creds.Add(ReadCredential((advapi32.CREDENTIAL)Marshal.PtrToStructure(credential, typeof(advapi32.CREDENTIAL))));
+                    }
                 }
-            }
-            else
-            {
-                Message = "Error enumerating creds [*]";
-            }
+                else
+                {
+                    Message = "Error enumerating creds [*]";
+                }
 
-            foreach(var cred in creds)
-            {
-                builder.AppendLine(string.Format("\tApplication Name: {0}\r\n\t Username: {1} Password: {2} (Credential Type: {3})", 
-                    cred.ApplicationName, cred.UserName, cred.Password, cred.CredentialType.ToString()));
+                foreach (var cred in creds)
+                {
+                    builder.AppendLine(string.Format("\tApplication Name: {0}\r\n\t Username: {1} Password: {2} (Credential Type: {3})",
+                        cred.ApplicationName, cred.UserName, cred.Password, cred.CredentialType.ToString()));
+                }
+                Message = builder.ToString();
             }
-            Message = builder.ToString();
+            catch
+            {
+                Message = "Check failed [*]";
+            }
         }
 
         public override string ToString()
