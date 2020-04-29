@@ -23,7 +23,7 @@ namespace SitRep.Checks.Permissions
                 var domainName = System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().DomainName;
                 if (string.IsNullOrWhiteSpace(domainName))
                 {
-                    Message = "Not domain joined";
+                    Message = "\tNot domain joined";
                     return;
                 }
 
@@ -37,7 +37,7 @@ namespace SitRep.Checks.Permissions
             }
             catch
             {
-                Message = "Check failed [*]";
+                Message = "\tCheck failed [*]";
             }
         }
 

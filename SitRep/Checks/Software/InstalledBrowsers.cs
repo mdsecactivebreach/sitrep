@@ -52,7 +52,7 @@ namespace SitRep.Checks.Software
             }
             catch
             {
-                Message = "Check failed [*]";
+                Message = "\tCheck failed [*]";
             }
         }
 

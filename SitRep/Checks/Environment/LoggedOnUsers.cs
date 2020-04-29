@@ -49,7 +49,7 @@ namespace SitRep.Checks.Environment
             }
             catch
             {
-                Message = "Check failed [*]";
+                Message = "\tCheck failed [*]";
             }
         }
 

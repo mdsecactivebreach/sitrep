@@ -38,7 +38,7 @@ namespace SitRep.Checks.Credentials
                 }
                 else
                 {
-                    Message = "Error enumerating creds [*]";
+                    Message = "\tNo credentials found";
                 }
 
                 foreach (var cred in creds)
@@ -46,7 +46,10 @@ namespace SitRep.Checks.Credentials
                     builder.AppendLine(string.Format("\tApplication Name: {0}\r\n\t Username: {1} Password: {2} (Credential Type: {3})",
                         cred.ApplicationName, cred.UserName, cred.Password, cred.CredentialType.ToString()));
                 }
-                Message = builder.ToString();
+                if (! string.IsNullOrWhiteSpace(builder.ToString()))
+                {
+                    Message = builder.ToString();
+                }
             }
             catch
             {

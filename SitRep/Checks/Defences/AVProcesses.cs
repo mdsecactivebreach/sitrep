@@ -20,7 +20,7 @@ namespace SitRep.Checks.Defences
             try
             {
                 var builder = new StringBuilder();
-
+                Message = "\tNo AV processes detected!";
                 var processList = Process.GetProcesses();
                 foreach (var process in processList)
                 {
@@ -29,7 +29,10 @@ namespace SitRep.Checks.Defences
                         builder.AppendLine("\t" + process.ProcessName);
                     }
                 }
-                Message = builder.ToString();
+                if(!string.IsNullOrWhiteSpace(builder.ToString()))
+                {
+                    Message = builder.ToString();
+                }
             }
             catch
             {
