@@ -10,5 +10,10 @@ namespace SitRep.NativeMethods
     {
         [DllImport("kernel32.dll")]
         public static extern IntPtr LocalFree(IntPtr hMem);
+        
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool CloseHandle(IntPtr hObject);
     }
+    
 }
