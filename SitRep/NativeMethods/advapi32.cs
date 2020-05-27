@@ -39,6 +39,9 @@ namespace SitRep.NativeMethods
             int TokenInformationLength,
             out int ReturnLength);
 
+        [DllImport("advapi32.dll", SetLastError = true)]
+        public static extern bool OpenProcessToken(IntPtr ProcessHandle, uint DesiredAccess, out IntPtr TokenHandle);
+        
         [StructLayout(LayoutKind.Sequential)]
         public struct SID_AND_ATTRIBUTES
         {
