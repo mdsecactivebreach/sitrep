@@ -15,5 +15,4 @@ namespace SitRep.NativeMethods
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool CloseHandle(IntPtr hObject);
     }
-    
 }
